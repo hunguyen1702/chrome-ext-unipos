@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/popup.css">
+  </head>
+  <body ng-app="uniposApp">
+    <div ng-controller="PopupController as vm">
+      <button ng-click="vm.sendUnipos()">
+        Start!
+      </button>
+      <button ng-click=vm.openOptionPage()>
+        Options
+      </button>
+    </div>
+  </body>
+  <script type="text/javascript" src="unipos.js"></script>
+  <script type="text/javascript" src="libs/angular.min.js"></script>
+  <script type="text/javascript" src="js/angular/uniposApp.js"></script>
+  <script type="text/javascript" src="js/angular/controllers/popupController.js"></script>
+</html>

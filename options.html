@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/options.css">
+  <title>Auto Unipos Settings</title>
+</head>
+<body ng-app="uniposApp">
+  <div class="contact" ng-controller="OptionController as vm" ng-init="vm.loadSettings()">
+    <div class="contact-form">
+      <div class="col-xs-6 list-individual-settings">
+        <h4 class="points-settings-title">Unipos Points Settings</h4>
+        <button class="add-btn form-btn semibold" ng-click="vm.newEntry()">+</button>
+        <div ng-repeat="user in vm.usersList track by $index">
+          <input type="text" class="form unipos-name" ng-model="user.name" placeholder="Name" />
+          <input type="number" class="form unipos-points" ng-model="user.points" placeholder="Points" />
+          <input type="text" class="form unipos-message" ng-model="user.message" placeholder="Message" />
+          <button class="remove-btn form-btn semibold" ng-click="vm.deleteEntry($index)">x</button>
+        </div>
+      </div>
+
+      <div class="col-xs-6">
+        <h4>Default settings</h4>
+        <textarea class="form textarea" placeholder="Message" ng-model='vm.defaultMessage'></textarea>
+        <input type="number" class="form unipos-points-dft" placeholder="Default Points"
+          ng-model='vm.defaultPoint'/>
+      </div>
+
+      <div class="relative fullwidth col-xs-12">
+          <button class="form-btn semibold" ng-click="vm.saveSettings($event)">
+            Save Settings
+          </button>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="libs/jquery.min.js"></script>
+  <script type="text/javascript" src="libs/angular.min.js"></script>
+  <script type="text/javascript" src="js/angular/uniposApp.js"></script>
+  <script type="text/javascript" src="js/angular/controllers/optionController.js"></script>
+</body>
+</html>

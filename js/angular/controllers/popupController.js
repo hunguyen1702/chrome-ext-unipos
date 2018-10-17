@@ -22,8 +22,8 @@ function PopupController($window){
           for (let [index, user] of items.usersList.entries()) {
             var message = user.message;
             var points = user.points;
-            if (message.length == 0) message = items.defaultMessage;
-            if (message.points == null) points = items.defaultPoint;
+            if (user.message.length == 0) message = items.defaultMessage;
+            if (user.points == null) points = items.defaultPoint;
             sendUnipos(user.name, points, 500 * index + 100, message, authnToken);
           }
           spinner.addClass('ng-hide');

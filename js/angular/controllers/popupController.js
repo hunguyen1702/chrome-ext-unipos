@@ -35,4 +35,20 @@ function PopupController($window){
   vm.openOptionPage = function() {
     chrome.tabs.create({ url: "options.html" });
   };
+
+  vm.testAlarm = function() {
+    var alarmName = 'testAlarm';
+    chrome.alarms.getAll(function(alarms){
+      var hasAlarm = alarms.some(function(a){
+        return a.name == alarmName;
+      });
+      if (hasAlarm) {
+        console.log('Stop current alarm');
+        chrome.alarms.clear(alarmName);
+      } else {
+        console.log('Create a new alarm');
+        chrome.alarms.create(alarmName, {periodInMinutes: 0.2})
+      }
+    });
+  };
 }

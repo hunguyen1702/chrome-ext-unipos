@@ -2,7 +2,7 @@
   "name": "Aunipos",
   "version": "1.0",
   "description": "Auto send unipos points extension",
-  "permissions": ["activeTab","declarativeContent", "storage"],
+  "permissions": ["activeTab","declarativeContent", "storage", "alarms"],
   "background": {
     "scripts": ["js/background.js"],
     "persistent": false

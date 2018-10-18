@@ -1,13 +1,28 @@
 var getClient = function(type, uniposAuthToken) {
   var uniposAPI = {
     "find": "https://unipos.me/q/jsonrpc",
-    "send": "https://unipos.me/c/jsonrpc"
+    "send": "https://unipos.me/c/jsonrpc",
+    "login": "https://unipos.me/a/jsonrpc"
   };
   var xmlHttpRequest = new XMLHttpRequest();
   xmlHttpRequest.open("POST", uniposAPI[type]);
-  xmlHttpRequest.setRequestHeader("x-unipos-token", uniposAuthToken);
+  if (type !== 'login') {
+    xmlHttpRequest.setRequestHeader("x-unipos-token", uniposAuthToken);
+  }
   xmlHttpRequest.setRequestHeader("content-type", "application/json");
   return xmlHttpRequest;
+};
+
+var loginUser = function(username, password) {
+  var requestPayload = {
+    "jsonrpc": "2.0",
+    "method": "Unipos.Login",
+    "params": {
+      "email_address": username,
+      "password": password
+    },
+    "id": "Unipos.Login"
+  }
 };
 
 var findUserId = function(userName, uniposAuthToken) {
@@ -32,7 +47,7 @@ var findUserId = function(userName, uniposAuthToken) {
   });
 };
 
-var sendUnipos = function(userName, points, timeWait, message, uniposAuthToken) {
+var sendUnipos = function(userName, points, delay, message, uniposAuthToken) {
   var listOfTags = [
     '#1.AppreciateTeamwork',
     '#2.ThinkOutsideTheBox',
@@ -64,6 +79,16 @@ var sendUnipos = function(userName, points, timeWait, message, uniposAuthToken) 
           console.log("==========================================")
         }
       }
-    }, timeWait);
+    }, delay);
   });
+};
+
+var processSending = function(items, timeWait, authnToken) {
+  for (let [index, user] of items.usersList.entries()) {
+    var message = user.message;
+    var points = user.points;
+    if (user.message.length == 0) message = items.defaultMessage;
+    if (user.points == null) points = items.defaultPoint;
+    sendUnipos(user.name, points, timeWait * index + 100, message, authnToken);
+  }
 };

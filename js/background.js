@@ -16,6 +16,6 @@ chrome.runtime.onInstalled.addListener(function() {
     }]);
   });
   chrome.alarms.onAlarm.addListener(function(alarm) {
-    alert("Got an alarm");
+    console.log("Got an alarm", alarm);
   });
 });

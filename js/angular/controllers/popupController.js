@@ -5,6 +5,7 @@ PopupController.$inject = ['$window'];
 
 function PopupController($window){
   var vm = this;
+  const timeWait = 500;
   var spinner = $('#spinner');
   spinner.addClass('ng-hide');
 
@@ -19,13 +20,7 @@ function PopupController($window){
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.executeScript(tabs[0].id, {code: 'localStorage.authnToken;'}, function(data){
           var authnToken = data[0];
-          for (let [index, user] of items.usersList.entries()) {
-            var message = user.message;
-            var points = user.points;
-            if (user.message.length == 0) message = items.defaultMessage;
-            if (user.points == null) points = items.defaultPoint;
-            sendUnipos(user.name, points, 500 * index + 100, message, authnToken);
-          }
+          processSending(items, timeWait, authnToken);
           spinner.addClass('ng-hide');
         });
       });
@@ -47,7 +42,7 @@ function PopupController($window){
         chrome.alarms.clear(alarmName);
       } else {
         console.log('Create a new alarm');
-        chrome.alarms.create(alarmName, {periodInMinutes: 0.2})
+        chrome.alarms.create(alarmName, {periodInMinutes: 0.01})
       }
     });
   };

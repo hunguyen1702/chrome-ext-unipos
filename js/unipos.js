@@ -23,6 +23,16 @@ var loginUser = function(username, password) {
     },
     "id": "Unipos.Login"
   }
+  return new Promise(function(resolve, reject) {
+    var client = getClient('login');
+    client.send(JSON.stringify(requestPayload));
+    client.onreadystatechange = function() {
+      if (this.readyState == 4) {
+        result = JSON.parse(this.responseText);
+        if (result.result) resolve(result.result.authnToken);
+      }
+    };
+  });
 };
 
 var findUserId = function(userName, uniposAuthToken) {
@@ -83,7 +93,7 @@ var sendUnipos = function(userName, points, delay, message, uniposAuthToken) {
   });
 };
 
-var processSending = function(items, timeWait, authnToken) {
+var processSending = function(items, timeWait) {
   for (let [index, user] of items.usersList.entries()) {
     var message = user.message;
     var points = user.points;

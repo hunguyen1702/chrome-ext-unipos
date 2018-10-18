@@ -26,7 +26,10 @@ function PopupController($window){
             if (user.points == null) points = items.defaultPoint;
             sendUnipos(user.name, points, 500 * index + 100, message, authnToken);
           }
-          spinner.addClass('ng-hide');
+          var factor = items.usersList.length - 1;
+          setTimeout(function() {
+            spinner.addClass('ng-hide');
+          }, 500 * factor + 100 * factor);
         });
       });
     });

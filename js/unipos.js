@@ -1,38 +1,13 @@
 var getClient = function(type, uniposAuthToken) {
   var uniposAPI = {
     "find": "https://unipos.me/q/jsonrpc",
-    "send": "https://unipos.me/c/jsonrpc",
-    "login": "https://unipos.me/a/jsonrpc"
+    "send": "https://unipos.me/c/jsonrpc"
   };
   var xmlHttpRequest = new XMLHttpRequest();
   xmlHttpRequest.open("POST", uniposAPI[type]);
-  if (type !== 'login') {
-    xmlHttpRequest.setRequestHeader("x-unipos-token", uniposAuthToken);
-  }
+  xmlHttpRequest.setRequestHeader("x-unipos-token", uniposAuthToken);
   xmlHttpRequest.setRequestHeader("content-type", "application/json");
   return xmlHttpRequest;
-};
-
-var loginUser = function(username, password) {
-  var requestPayload = {
-    "jsonrpc": "2.0",
-    "method": "Unipos.Login",
-    "params": {
-      "email_address": username,
-      "password": password
-    },
-    "id": "Unipos.Login"
-  }
-  return new Promise(function(resolve, reject) {
-    var client = getClient('login');
-    client.send(JSON.stringify(requestPayload));
-    client.onreadystatechange = function() {
-      if (this.readyState == 4) {
-        result = JSON.parse(this.responseText);
-        if (result.result) resolve(result.result.authnToken);
-      }
-    };
-  });
 };
 
 var findUserId = function(userName, uniposAuthToken) {
@@ -81,14 +56,6 @@ var sendUnipos = function(userName, points, delay, message, uniposAuthToken) {
     var client = getClient('send', uniposAuthToken);
     setTimeout(function(){
       client.send(JSON.stringify(requestPayload));
-      client.onreadystatechange = function() {
-        if (this.readyState == 4) {
-          console.log("Send to: " + userName);
-          console.log("Payload: " + JSON.stringify(requestPayload));
-          console.log(this.responseText);
-          console.log("==========================================")
-        }
-      }
     }, delay);
   });
 };
